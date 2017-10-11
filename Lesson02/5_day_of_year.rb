@@ -1,16 +1,8 @@
 def leap_year?(year)
-  if year % 4 == 0
-    if year % 100 == 0
-      if year % 400 == 0
-        1
-      else
-        0
-      end
-    else
-      1
-    end
+  if (year % 4) != 0 || (year % 100) == 0 && (year % 400) != 0
+    false
   else
-    0
+    true
   end
 end
 
@@ -24,7 +16,7 @@ print "Введите год: "
 year = gets.chomp.to_i
 
 months = [31,28,31,30,31,30,31,31,30,31,30,31]#Количество дней по месяцам
-months[1] += leap_year?(year)#Коррекция февраля на високосный год
+months[1] = months[1] + 1 if leap_year?(year)#Коррекция февраля на високосный год
 
 day_of_year = day
 i = 1

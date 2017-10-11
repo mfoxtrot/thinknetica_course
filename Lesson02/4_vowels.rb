@@ -1,5 +1,5 @@
-alphabet = Array.new
-result = Hash.new
+alphabet = []
+result = {}
 
 for s in 'а'..'я'
   alphabet << s

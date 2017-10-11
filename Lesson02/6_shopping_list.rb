@@ -7,7 +7,7 @@
 Вычислить и вывести на экран итоговую сумму всех покупок в "корзине".
 =end
 
-list = Hash.new
+list = {}
 loop do
   print "Введите название товара: "
   goods_name = gets.chomp
@@ -23,11 +23,11 @@ loop do
   list[goods_name] = {price: goods_price, qnty: goods_qnty}
 end
 
-s = 0
+total_sum = 0
 list.each do |k,v|
-  s0 = v[:price] * v[:qnty]
-  s += s0
-  puts "#{k}: #{v}. Итоговая сумма: #{s0}"
+  line_sum = v[:price] * v[:qnty]
+  total_sum += line_sum
+  puts "#{k}: #{v}. Итоговая сумма: #{line_sum}"
 end
 
-puts "Общая сумма: #{s}"
+puts "Общая сумма: #{total_sum}"

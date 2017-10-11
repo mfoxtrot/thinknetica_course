@@ -1,9 +1,5 @@
 def leap_year?(year)
-  if (year % 4) != 0 || (year % 100) == 0 && (year % 400) != 0
-    false
-  else
-    true
-  end
+  (year % 4) != 0 || (year % 100) == 0 && (year % 400) != 0
 end
 
 print "Введите день: "

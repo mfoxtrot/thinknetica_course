@@ -39,17 +39,17 @@ puts t.speed
 puts t.carriages_number
 
 t.set_route r
-puts t.route.stations[t.current_station].name
+puts t.current_station.name
 
 t.move_forward
-puts t.route.stations[t.current_station].name
+puts t.current_station.name
 
 t.move_backward
-puts t.route.stations[t.current_station].name
+puts t.current_station.name
 
 t.move_forward
 t.move_forward
-puts t.route.stations[t.current_station].name
-puts t.route.stations[t.current_station].trains_by_type :passenger
+puts t.current_station.name
+puts t.current_station.trains_by_type :passenger
 
 puts s1.trains

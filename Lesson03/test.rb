@@ -19,9 +19,9 @@ r.add_station s3
 r.add_station s4
 r.add_station s5
 
-r.list_stations.each {|s| puts s.name}
+r.stations.each {|s| puts s.name}
 
-t = Train.new('Krasnaya Strela', :passnger, 14)
+t = Train.new('Krasnaya Strela', :passenger, 14)
 t.speed = 40
 puts t.speed
 
@@ -39,17 +39,17 @@ puts t.speed
 puts t.carriages_number
 
 t.set_route r
-puts t.current_station.name
+puts t.route.stations[t.current_station].name
 
 t.move_forward
-puts t.current_station.name
+puts t.route.stations[t.current_station].name
 
 t.move_backward
-puts t.current_station.name
+puts t.route.stations[t.current_station].name
 
 t.move_forward
 t.move_forward
-puts t.current_station.name
-puts t.current_station.trains_list_by_type :passenger
+puts t.route.stations[t.current_station].name
+puts t.route.stations[t.current_station].trains_by_type :passenger
 
-puts s1.trains_list
+puts s1.trains

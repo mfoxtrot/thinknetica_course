@@ -27,23 +27,35 @@ class Train
 
   def remove_carriage
     brake
-    @carriages_number -= 1
+    @carriages_number = @carriages_number - 1 if @carriages_number > 0
   end
 
   def set_route(route)
-    self.route = route
-    @current_station = route.first_station
+    @route = route
+    @current_station = 0
   end
 
   def move_forward
-    @current_station.dispatch_train self
-    @current_station = @route.list_stations[@route.list_stations.index(@current_station) + 1]
-    @current_station.operate_train self
+    if @current_station < @route.stations.count - 1
+      @route.stations[current_station].dispatch_train self
+      @current_station += 1
+      @route.stations[current_station].operate_train self
+    end
   end
 
   def move_backward
-    @current_station.dispatch_train self
-    @current_station = @route.list_stations[@route.list_stations.index(@current_station) - 1]
-    @current_station.operate_train self
+    if @current_station > 0
+      @route.stations[current_station].dispatch_train self
+      @current_station -= 1
+      @route.stations[current_station].operate_train self
+    end
+  end
+
+  def next_station
+    @current_station + 1 if @current_station < @route.stations.count - 1
+  end
+
+  def previous_station
+    @current_station -1 if @current_station > 0
   end
 end

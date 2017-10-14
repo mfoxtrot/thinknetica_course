@@ -1,24 +1,24 @@
 class Station
 
-  attr_reader :trains_list
+  attr_reader :trains
   attr_reader :name
 
   def initialize(name)
     @name = name
-    @trains_list = []
+    @trains = []
   end
 
   def operate_train(train)
-    @trains_list << train
+    @trains << train
   end
 
-  def trains_list_by_type(type)
-    @trains_list.select do |train|
+  def trains_by_type(type)
+    @trains.select do |train|
       train if train.type == type
     end
   end
 
   def dispatch_train(train)
-    @trains_list.delete(train)
+    @trains.delete(train)
   end
 end

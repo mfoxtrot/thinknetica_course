@@ -8,12 +8,14 @@ class Train
   attr_reader :carriages
   attr_reader :number
 
+  @@ALL_TRAINS = []
 
   def initialize(number)
     @number = number
     @carriages_number = 0
     @speed = 0
     @carriages = []
+    @@ALL_TRAINS << self
   end
 
   def set_speed(speed)
@@ -62,6 +64,10 @@ class Train
 
   def previous_station
     @current_station_index -1 if @current_station_index > 0
+  end
+
+  def self.find(number)
+    @@ALL_TRAINS.find {|t| t.number == number}
   end
 
   protected

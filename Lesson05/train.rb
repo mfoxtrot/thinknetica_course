@@ -8,14 +8,14 @@ class Train
   attr_reader :carriages
   attr_reader :number
 
-  @@ALL_TRAINS = []
+  @@all_trains = {}
 
   def initialize(number)
     @number = number
     @carriages_number = 0
     @speed = 0
     @carriages = []
-    @@ALL_TRAINS << self
+    @@all_trains[number] = self
   end
 
   def set_speed(speed)
@@ -67,7 +67,7 @@ class Train
   end
 
   def self.find(number)
-    @@ALL_TRAINS.find {|t| t.number == number}
+    @@all_trains[number]
   end
 
   protected

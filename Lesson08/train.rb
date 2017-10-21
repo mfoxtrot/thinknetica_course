@@ -78,6 +78,10 @@ class Train
     false
   end
 
+  def each_carriage(&block)
+    @carriages.each { |c| block[c] }
+  end
+
   protected
   #Этот метод будет перекрываться в наследниках и возвращать тип поезда
   def type

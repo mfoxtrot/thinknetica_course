@@ -36,6 +36,10 @@ class Station
     false
   end
 
+  def each_train(&block)
+    @trains.each { |t| block[t] }
+  end
+
   private
   def validate!
     raise "Name can not be nil" if @name.nil?

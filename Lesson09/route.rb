@@ -1,5 +1,4 @@
 class Route
-
   attr_reader :first_station
   attr_reader :last_station
   attr_reader :stations
@@ -26,8 +25,10 @@ class Route
   end
 
   private
+
   def validate!
-    raise "Stations should not be nil" if @first_station == nil || @last_station == nil
+    message = 'Stations should not be nil'
+    raise message if @first_station.nil? || @last_station.nil?
     true
   end
 end

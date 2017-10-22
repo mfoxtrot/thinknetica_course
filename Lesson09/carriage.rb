@@ -1,9 +1,7 @@
-=begin
-  Пример подклЮчения модуля InstanceCounter
-=end
+# Example of using instance_counter module
 require_relative 'manufacturer.rb'
 require_relative 'instance_counter.rb'
-
+# Carriage class
 class Carriage
   include Manufacturer
   extend InstanceCounter::ClassMethods
@@ -24,8 +22,10 @@ class Carriage
   end
 
   private
+
   def validate!
-    raise "Carriage type should only be :cargo or :passenger" if not [:cargo, :passenger].include? @type
+    message = 'Carriage type should only be :cargo or :passenger'
+    raise message unless %i(cargo passenger).include? @type
     true
   end
 end

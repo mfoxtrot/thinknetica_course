@@ -1,10 +1,15 @@
 class PassengerTrain < Train
-
   def type
     :passenger
   end
 
   def show_carriage_info
-    self.each_carriage { |c, number| puts "Carriage #{number}. Total capacity: #{c.capacity}, available seats: #{c.available_seats}, taken: #{c.taken_seats}"}
+    each_carriage do |c, number|
+      info = "Carriage #{number}. "
+      info << "Total capacity: #{c.capacity}, "
+      info << "available seats: #{c.available_seats}, "
+      info << "taken: #{c.taken_seats}"
+      puts info
+    end
   end
 end

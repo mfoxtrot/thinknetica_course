@@ -1,11 +1,11 @@
-
-
 require_relative 'train'
 require_relative 'station'
 require_relative 'route'
 require_relative 'carriage'
 require_relative 'passenger_train'
 require_relative 'cargo_train'
+require_relative 'cargo_carriage'
+require_relative 'passenger_carriage'
 
 class Main
 
@@ -32,7 +32,9 @@ class Main
                         "4. Remove a carriage ('remove_carriage' or '4')",
                         "5. Move forward ('move_forward' or '5')",
                         "6. Move backward ('move_backward' or '6')",
-                        "7. Exit ('exit' or '7')"]}
+                        "7. Show carriages info ('carriage_info' or '7')",
+                        "8. Take a seat or volume '8'",
+                        "9. Exit ('exit' or '9')"]}
    @@TRAINS_TYPES_LIST = [:passenger, :cargo]
 
   def initialize
@@ -81,11 +83,31 @@ private
   end
 
   def list_carriages(train)
-    train.carriages.each_with_index {|c, i| puts "#{i}: #{c}"}
+    train.show_carriage_info
   end
 
   def list_trains_types
     @@TRAINS_TYPES_LIST.each_with_index {|t,i| puts "#{i}: #{t}"}
+  end
+
+  def take_seat_or_volume
+    train = select_train("Select the train: ")
+    case train.type
+    when :cargo then take_volume(train)
+    when :passenger then take_a_seat(train)
+    end
+  end
+
+  def take_volume(train)
+    carriage = select_carriage(train, "Select carriage to take volume: ")
+    puts "Enter volume to take: "
+    volume = gets.chomp.to_i
+    carriage.take_volume(volume)
+  end
+
+  def take_a_seat(train)
+    carriage = select_carriage(train, "Select carriage to take volume: ")
+    carriage.take_a_seat
   end
 
 #Методы реализующие функциональность базовых классов Train, Station, Route, Carriage
@@ -97,8 +119,7 @@ private
 
   def list_trains_by_station
     station = select_station("Select the station to list trains: ")
-    type = select_train_type("Select the train type to list: ")
-    station.trains_by_type(type).each_with_index {|t, i| puts "#{i}: #{t.number}"}
+    station.each_train { |t| puts "Train: #{t.number}, type: #{t.type.to_s}, carriages: #{t.carriages.count}"}
   end
 
   def create_route
@@ -144,7 +165,12 @@ private
 
   def add_carriage
     train = select_train("Select the train to add a carriage: ")
-    new_carriage = Carriage.new(train.type)
+    new_carriage =
+    case train.type
+    when :cargo then create_cargo_carriage
+    when :passenger then create_passenger_carriage
+    end
+
     train.add_carriage(new_carriage)
   end
 
@@ -162,6 +188,23 @@ private
   def move_backward
     train = select_train("Select the train to move backward: ")
     train.move_backward
+  end
+
+  def create_cargo_carriage
+    puts "Enter the carriage volume: "
+    volume = gets.chomp.to_i
+    CargoCarriage.new(volume)
+  end
+
+  def create_passenger_carriage
+    puts "Enter the carriage capacity: "
+    capacity = gets.chomp.to_i
+    PassengerCarriage.new(capacity)
+  end
+
+  def show_carriage_info
+    train = select_train("Select the train to show carriage info: ")
+    list_carriages(train)
   end
 #Методы выбора значений
   def select_train(label)
@@ -236,13 +279,15 @@ private
     loop do
       command = select_menu(:trains)
       case command
-        when 'add','1' then create_train
-        when 'set_route','2' then set_route
-        when 'add_carriage','3' then add_carriage
-        when 'remove_carriage','4' then remove_carriage
-        when 'move_forward','5' then move_forward
-        when 'move_backward','6' then move_backward
-        when 'exit','7' then break
+        when 'add', '1' then create_train
+        when 'set_route', '2' then set_route
+        when 'add_carriage', '3' then add_carriage
+        when 'remove_carriage', '4' then remove_carriage
+        when 'move_forward', '5' then move_forward
+        when 'move_backward', '6' then move_backward
+        when 'carriage_info', '7' then show_carriage_info
+        when '8' then take_seat_or_volume
+        when 'exit','9' then break
       end
     end
   end

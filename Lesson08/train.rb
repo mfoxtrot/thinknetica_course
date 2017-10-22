@@ -81,10 +81,18 @@ class Train
   def each_carriage(&block)
     @carriages.each { |c| block[c] }
   end
+#Вариант с двумя аргументами в блоке
+  def each_carriage(&block)
+    @carriages.each_with_index { |c,i| block[c,i] }
+  end
 
   protected
   #Этот метод будет перекрываться в наследниках и возвращать тип поезда
   def type
+  end
+  #Этот метод будет перекрыватья в наследниках и отображать информацию о вагонах
+  #в зависимости от типа поезда
+  def show_carriage_info
   end
 
   private

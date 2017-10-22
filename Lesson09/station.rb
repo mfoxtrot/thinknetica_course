@@ -1,5 +1,4 @@
 class Station
-
   attr_reader :trains
   attr_reader :name
 
@@ -41,9 +40,10 @@ class Station
   end
 
   private
+
   def validate!
-    raise "Name can not be nil" if @name.nil?
-    raise "Name should be at least 3 symbols" if @name.to_s.length<3
+    raise 'Name can not be nil' if @name.nil?
+    raise 'Name should be at least 3 symbols' if @name.to_s.length < 3
     true
   end
 end

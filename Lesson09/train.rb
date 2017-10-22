@@ -25,21 +25,19 @@ class Train
   end
 
   def brake
-    self.set_speed 0
+    set_speed 0
   end
 
   def add_carriage(carriage)
-    if carriage.type == self.type
-      brake
-      add_carriage!(carriage)
-    end
+    return unless carriage.type == self.type
+    brake
+    add_carriage!(carriage)
   end
 
   def remove_carriage(carriage)
-    if carriage.type == self.type
-      brake
-      remove_carriage!(carriage) if self.carriages.include? carriage
-    end
+    return unless carriage.type == self.type
+    brake
+    remove_carriage!(carriage) if carriages.include? carriage
   end
 
   def set_route(route)
@@ -53,11 +51,11 @@ class Train
   end
 
   def move_forward
-    move_forward! if not last_station?
+    move_forward! unless last_station?
   end
 
   def move_backward
-    move_backward! if not first_station?
+    move_backward! unless first_station?
   end
 
   def next_station
@@ -65,7 +63,7 @@ class Train
   end
 
   def previous_station
-    @current_station_index -1 if @current_station_index > 0
+    @current_station_index - 1 if @current_station_index > 0
   end
 
   def self.find(number)
@@ -78,53 +76,41 @@ class Train
     false
   end
 
-#Вариант с двумя аргументами в блоке
+  # Each method expecting a block
   def each_carriage(&block)
-    @carriages.each_with_index { |c,i| block[c,i] }
+    @carriages.each_with_index { |c, i| block[c, i] }
   end
 
   protected
-  #Этот метод будет перекрываться в наследниках и возвращать тип поезда
-  def type
-  end
-  #Этот метод будет перекрыватья в наследниках и отображать информацию о вагонах
-  #в зависимости от типа поезда
-  def show_carriage_info
-  end
+
+  # This method will be overriden in subclasses
+  def type; end
+
+  def show_carriage_info; end
 
   private
-=begin
-  Следующие методы вынесены в приватную секцию, т.к. они не должны  быть видны
-  извне. Их можно вызывать только в методах класса, после соответствующих
-  проверок. В данном случае должна быть проверка на соответствие типа вагона
-  типу поезда, а в случае отцепки вагона еще и на существование этого вагона
-  в составе поезда. Кроме того, в публичных методах класса из которых будут
-  вызываться эти методы должен быть вызов метода торможения поезда.
-=end
+
+  # Dangerous methods
   attr_reader :current_station_index
   def remove_carriage!(carriage)
-    self.carriages.delete(carriage)
+    @carriages.delete(carriage)
     @carriages_number -= 1
   end
 
   def add_carriage!(carriage)
-    self.carriages << carriage
+    @carriages << carriage
     @carriages_number += 1
   end
 
-  #Служебные методы класса, должны использоваться для проверки маршрутов
+  # Methods to check routes
   def last_station?
     @current_station_index == @route.stations.count - 1
   end
 
   def first_station?
-    @current_station_index == 0
+    @current_station_index.zero?
   end
 
-=begin
-  "Опасные" методы непосредственного перемещения поезда
-  Должны вызываться только из методов класса после проверок на их безопасность
-=end
   def move_forward!
     self.current_station.dispatch_train self
     @current_station_index += 1
@@ -138,7 +124,7 @@ class Train
   end
 
   def validate!
-    raise "Wrong train number format" if not NUMBER_FORMAT =~ @number
+    raise 'Wrong train number format' if NUMBER_FORMAT !~ @number
     true
   end
 end

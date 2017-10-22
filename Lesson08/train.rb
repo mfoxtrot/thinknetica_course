@@ -78,9 +78,6 @@ class Train
     false
   end
 
-  def each_carriage(&block)
-    @carriages.each { |c| block[c] }
-  end
 #Вариант с двумя аргументами в блоке
   def each_carriage(&block)
     @carriages.each_with_index { |c,i| block[c,i] }

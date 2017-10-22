@@ -1,6 +1,5 @@
 class PassengerCarriage < Carriage
   attr_reader :capacity
-  attr_reader :available_seats
   attr_reader :taken_seats
 
   def initialize(capacity)
@@ -15,5 +14,9 @@ class PassengerCarriage < Carriage
       @available_seats -= 1
       @taken_seats += 1
     end
+  end
+
+  def available_seats
+    @capacity - @taken_seats
   end
 end

@@ -1,3 +1,4 @@
+# This is a CargoCarriage class. It has specific methods to manage volume
 class CargoCarriage < Carriage
   attr_reader :volume
   attr_reader :taken_volume
@@ -10,10 +11,9 @@ class CargoCarriage < Carriage
   end
 
   def take_volume(volume_to_take)
-    if volume_to_take <= @available_volume
-      @available_volume -= volume_to_take
-      @taken_volume += volume_to_take
-    end
+    return if volume_to_take > @available_volume
+    @available_volume -= volume_to_take
+    @taken_volume += volume_to_take
   end
 
   def available_volume

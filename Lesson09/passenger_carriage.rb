@@ -10,10 +10,9 @@ class PassengerCarriage < Carriage
   end
 
   def take_a_seat
-    if @available_seats > 0
-      @available_seats -= 1
-      @taken_seats += 1
-    end
+    return if @available_seats.zero?
+    @available_seats -= 1
+    @taken_seats += 1
   end
 
   def available_seats

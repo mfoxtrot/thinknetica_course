@@ -1,3 +1,4 @@
+# PassenagerCarriage class has specifing methods to manage seats
 class PassengerCarriage < Carriage
   attr_reader :capacity
   attr_reader :taken_seats

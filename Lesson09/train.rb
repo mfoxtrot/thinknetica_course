@@ -1,5 +1,5 @@
 require_relative 'manufacturer.rb'
-
+# Main train class
 class Train
   include Manufacturer
   attr_reader :speed
@@ -20,27 +20,23 @@ class Train
     @@all_trains[number] = self
   end
 
-  def set_speed(speed)
-    @speed = speed
-  end
-
   def brake
-    set_speed 0
+    @speed = 0
   end
 
   def add_carriage(carriage)
-    return unless carriage.type == self.type
+    return unless carriage.type == type
     brake
     add_carriage!(carriage)
   end
 
   def remove_carriage(carriage)
-    return unless carriage.type == self.type
+    return unless carriage.type == type
     brake
     remove_carriage!(carriage) if carriages.include? carriage
   end
 
-  def set_route(route)
+  def route=(route)
     @route = route
     @current_station_index = 0
     @route.first_station.operate_train self
@@ -59,7 +55,8 @@ class Train
   end
 
   def next_station
-    @current_station_index + 1 if @current_station_index < @route.stations.count - 1
+    return unless @current_station_index < @route.stations.count - 1
+    @current_station_index + 1
   end
 
   def previous_station
@@ -72,7 +69,7 @@ class Train
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
@@ -82,6 +79,8 @@ class Train
   end
 
   protected
+
+  attr_writer :speed
 
   # This method will be overriden in subclasses
   def type; end
@@ -112,15 +111,15 @@ class Train
   end
 
   def move_forward!
-    self.current_station.dispatch_train self
+    current_station.dispatch_train self
     @current_station_index += 1
-    self.current_station.operate_train self
+    current_station.operate_train self
   end
 
   def move_backward!
-    self.current_station.dispatch_train self
+    current_station.dispatch_train self
     @current_station_index -= 1
-    self.current_station.operate_train self
+    current_station.operate_train self
   end
 
   def validate!

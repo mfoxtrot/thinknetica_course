@@ -1,14 +1,19 @@
+# Station class
 class Station
   attr_reader :trains
   attr_reader :name
 
-  @@all_stations = []
+  class << self
+    attr_reader :all_stations
+  end
+
+  @all_stations = []
 
   def initialize(name)
     @name = name
     validate!
     @trains = []
-    @@all_stations << self
+    self.class.all_stations << self
   end
 
   def operate_train(train)
@@ -26,12 +31,12 @@ class Station
   end
 
   def self.all
-    @@all_stations
+    @all_stations
   end
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 

@@ -1,4 +1,6 @@
+# Module shows using class and instance-level methods
 module InstanceCounter
+  # Class methods
   module ClassMethods
     attr_reader :instances
     def instances
@@ -13,6 +15,7 @@ module InstanceCounter
     end
   end
 
+  # Instance methods
   module InstanceMethods
     private
 

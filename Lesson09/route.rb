@@ -1,3 +1,4 @@
+# Route class is used to move trains between stations
 class Route
   attr_reader :first_station
   attr_reader :last_station
@@ -20,7 +21,7 @@ class Route
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 

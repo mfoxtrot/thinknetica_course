@@ -1,3 +1,4 @@
+# Specific type of trains
 class PassengerTrain < Train
   def type
     :passenger

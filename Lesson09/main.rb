@@ -6,44 +6,50 @@ require_relative 'passenger_train'
 require_relative 'cargo_train'
 require_relative 'cargo_carriage'
 require_relative 'passenger_carriage'
-
+# Main program class to manipulate trains, stations, routes, carriages
 class Main
-  @@menu = { main: [
-                    "MAIN MENU. You can:",
-                    "1. Manage stations ('stations' or '1')",
-                    "2. Manage routes ('routes' or '2')",
-                    "3. Manage trains ('trains' or '3')",
-                    "4. Exit ('exit' or '4')"
-                   ],
-             routes: [
-                     "ROUTES MENU. You can:",
-                     "1. Create a route ('add' or '1')",
-                     "2. Add a station ('add_station' or '2')",
-                     "3. Remove a station ('remove_station' or '3')",
-                     "4. List routes ('list_routes' or '4')",
-                     "5. Exit ('exit' or '5')"
-                     ],
-            stations: [
-                      "STATIONS MENU. You can:",
-                      "1. Create a station ('add' or '1')",
-                      "2. List stations ('list' or '2')",
-                      "3. List trains ('trains' or '3')",
-                      "4. Exit ('exit' or '4')"
-                      ],
-            trains: [
-                    "TRAINS MENU. You can:",
-                    "1. Create a train ('add' or '1')",
-                    "2. Set a route to a train ('set_route' or '2')",
-                    "3. Add a carriage ('add_carriage' or '3')",
-                    "4. Remove a carriage ('remove_carriage' or '4')",
-                    "5. Move forward ('move_forward' or '5')",
-                    "6. Move backward ('move_backward' or '6')",
-                    "7. Show carriages info ('carriage_info' or '7')",
-                    "8. Take a seat or volume '8'",
-                    "9. Exit ('exit' or '9')"
-                    ]
-                  }
-   @@trains_types_list = %i(cargo passenger)
+  class << self
+    attr_accessor :menu
+    attr_accessor :trains_types_list
+  end
+
+  @menu = {
+    main: [
+      'MAIN MENU. You can:',
+      "1. Manage stations ('stations' or '1')",
+      "2. Manage routes ('routes' or '2')",
+      "3. Manage trains ('trains' or '3')",
+      "4. Exit ('exit' or '4')"
+    ],
+    routes: [
+      'ROUTES MENU. You can:',
+      "1. Create a route ('add' or '1')",
+      "2. Add a station ('add_station' or '2')",
+      "3. Remove a station ('remove_station' or '3')",
+      "4. List routes ('list_routes' or '4')",
+      "5. Exit ('exit' or '5')"
+    ],
+    stations: [
+      'STATIONS MENU. You can:',
+      "1. Create a station ('add' or '1')",
+      "2. List stations ('list' or '2')",
+      "3. List trains ('trains' or '3')",
+      "4. Exit ('exit' or '4')"
+    ],
+    trains: [
+      'TRAINS MENU. You can:',
+      "1. Create a train ('add' or '1')",
+      "2. Set a route to a train ('set_route' or '2')",
+      "3. Add a carriage ('add_carriage' or '3')",
+      "4. Remove a carriage ('remove_carriage' or '4')",
+      "5. Move forward ('move_forward' or '5')",
+      "6. Move backward ('move_backward' or '6')",
+      "7. Show carriages info ('carriage_info' or '7')",
+      "8. Take a seat or volume '8'",
+      "9. Exit ('exit' or '9')"
+    ]
+  }
+  @trains_types_list = %i[cargo passenger]
 
   def initialize
     @stations = []
@@ -67,7 +73,7 @@ class Main
   private
 
   def select_menu(type)
-    @@menu[type].each { |m| puts m }
+    self.class.menu[type].each { |m| puts m }
     print 'Your choice: '
     command = gets.chomp
     command
@@ -97,7 +103,7 @@ class Main
   end
 
   def list_trains_types
-    @@trains_types_list.each_with_index { |t, i| puts "#{i}: #{t}" }
+    self.class.trains_types_list.each_with_index { |t, i| puts "#{i}: #{t}" }
   end
 
   def take_seat_or_volume
@@ -171,10 +177,10 @@ class Main
     @trains << newtrain
   end
 
-  def set_route
+  def setting_route
     train = select_train('Select the train to set the route: ')
     route = select_route('Select the route to set: ')
-    train.set_route(route)
+    train.route = route
   end
 
   def add_carriage
@@ -189,8 +195,8 @@ class Main
 
   def remove_carriage
     train = select_train('Select the train to remove carriage: ')
-    carriage_to_remove = select_carriage(train, 'Select the carriage to remove: ')
-    train.remove_carriage(carriage_to_remove)
+    carriage = select_carriage(train, 'Select the carriage to remove: ')
+    train.remove_carriage(carriage)
   end
 
   def move_forward
@@ -219,6 +225,7 @@ class Main
     train = select_train('Select the train to show carriage info: ')
     list_carriages(train)
   end
+
   # Choose values methods
   def select_train(label)
     list_trains
@@ -259,7 +266,7 @@ class Main
     list_trains_types
     print label
     type_index = gets.chomp.to_i
-    @@trains_types_list[type_index]
+    self.class.trains_types_list[type_index]
   end
 
   # Methods menues
@@ -293,7 +300,7 @@ class Main
       command = select_menu(:trains)
       case command
       when 'add', '1' then create_train
-      when 'set_route', '2' then set_route
+      when 'set_route', '2' then setting_route
       when 'add_carriage', '3' then add_carriage
       when 'remove_carriage', '4' then remove_carriage
       when 'move_forward', '5' then move_forward

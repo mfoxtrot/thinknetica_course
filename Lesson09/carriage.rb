@@ -17,7 +17,7 @@ class Carriage
 
   def valid?
     validate!
-  rescue
+  rescue StandardError
     false
   end
 
@@ -25,7 +25,7 @@ class Carriage
 
   def validate!
     message = 'Carriage type should only be :cargo or :passenger'
-    raise message unless %i(cargo passenger).include? @type
+    raise message unless %i[cargo passenger].include? @type
     true
   end
 end

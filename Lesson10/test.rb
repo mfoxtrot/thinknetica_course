@@ -2,13 +2,18 @@ require_relative 'accessors.rb'
 require_relative 'validation.rb'
 class Test
   extend Accessors
-  extend Validation
+  extend Validation::ClassMethods
+  include Validation::InstanceMethods
 
   attr_accessor_with_history :a, :b, :c
   strong_attr_accessor :s, String
 
   validate :a, :presence
   validate :a, :type, Integer
+
+  def initialize
+    initialize_history
+  end
 end
 
 t = Test.new

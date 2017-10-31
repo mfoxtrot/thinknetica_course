@@ -11,11 +11,13 @@ module Accessors
       end
 
       define_method("#{arg}_history") do
-        if instance_variable_defined?("@#{arg}_history")
-          instance_variable_get("@#{arg}_history")
-        else
-          instance_variable_set("@#{arg}_history", [])
-        end
+        instance_variable_get("@#{arg}_history")
+      end
+    end
+
+    define_method('initialize_history') do
+      args.each do |arg|
+        instance_variable_set("@#{arg}_history", [])
       end
     end
   end
@@ -26,13 +28,8 @@ module Accessors
     end
 
     define_method("#{arg}=") do |var|
-      instance_variable_set("@#{arg}", var)
-      send("#{arg}_validate_class!")
-    end
-
-    define_method("#{arg}_validate_class!") do
-      var = instance_variable_get("@#{arg}")
       raise "Incorrect class of #{arg} value!" unless var.class == arg_class
+      instance_variable_set("@#{arg}", var)
     end
   end
 end

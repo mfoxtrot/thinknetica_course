@@ -13,18 +13,18 @@ module Validation
   end
 
   module InstanceMethods
-    define_method('validate!') do
+    def validate!
       self.class.to_validate.each do |key, value|
         value.each do |validation_params|
           method_name = validation_params[:method]
-          args = validation_params[:args]
-          send(method_name, instance_variable_get("@#{key}"), *args)
+          args = validation_params[:args][0]
+          send(method_name, instance_variable_get("@#{key}"), args)
         end
       end
       true
     end
 
-    def validate_presence!(var)
+    def validate_presence!(var, *args)
       raise "Variable #{var} is nil" if var.nil?
     end
 
@@ -34,13 +34,14 @@ module Validation
     end
 
     def validate_type!(var, checking_class)
-      message = "Var #{var} has wrond class. Right is #{checking_class}"
+      message = "#{var} has wrond class. Right is #{checking_class}"
       raise message unless var.class == checking_class
     end
 
     def valid?
       validate!
-    rescue StandardError
+    rescue StandardError => e
+      puts e.message
       false
     end
   end

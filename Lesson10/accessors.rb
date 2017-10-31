@@ -11,13 +11,11 @@ module Accessors
       end
 
       define_method("#{arg}_history") do
-        instance_variable_get("@#{arg}_history")
-      end
-    end
-
-    define_method('initialize_history') do
-      args.each do |arg|
-        instance_variable_set("@#{arg}_history", [])
+        if instance_variable_defined?("@#{arg}_history")
+          instance_variable_get("@#{arg}_history")
+        else
+          instance_variable_set("@#{arg}_history", [])
+        end
       end
     end
   end

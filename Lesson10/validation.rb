@@ -9,7 +9,6 @@ module Validation
         method: "validate_#{validation_type}!",
         args: args
       }
-      puts "to_validate: #{to_validate}"
     end
   end
 
